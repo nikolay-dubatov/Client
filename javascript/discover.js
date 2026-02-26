@@ -26,7 +26,7 @@ async function scanLocalNetwork() {
                 html += `
                     <li>
                         <strong>${device.ip}:5000<strong>
-                        <button class="btn connect-device" data-ip="${device.ip}>">
+                        <button class="btn connect-device" data-ip="${device.ip}">
                             Подключиться
                         </button>
                     </li>
@@ -56,7 +56,6 @@ async function checkDevice(ip, devices) {
     try {
         const response = await fetch(`http://${ip}:5000/discover`, {
             method: "GET", 
-            mode: "cors", 
             timeout: 200
         });
         
