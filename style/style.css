@@ -216,6 +216,15 @@ label {
     h1 {
         font-size: 24px;
     }
+    .device-card {
+        padding: 10px;
+    }
+    
+    .device-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
 }
 
 /* Дополнительные эффекты */
@@ -225,4 +234,56 @@ label {
 .btn:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
+}
+
+/* Стили для списка устройств */
+.devices-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+.device-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.device-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.device-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.device-status {
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.online {
+    background: #27ae60;
+    color: white;
+}
+
+.device-info {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
+.device-info p {
+    margin: 5px 0;
 }
