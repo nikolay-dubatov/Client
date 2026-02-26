@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Веб-клиент управления</title>
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <!-- Секция ввода IP-адреса -->
+        <div class="ip-section">
+            <h2>Настройка подключения</h2>
+            <label for="device-ip">IP-адрес устройства:</label>
+            <input type="text" id="device-ip" placeholder="192.168.0.83:5000" value="192.168.0.83:5000">
+            <button id="connect-btn" class="btn connect">Подключиться</button>
+        </div>
+
+        
+        <!-- Секция обнаружения устройств -->
+        <div class="discovery-section">
+            <h2>Обнаружение устройств</h2>
+            <button id="discover-btn" class="btn discover">Найти устройства в сети</button>
+            
+            <div id="discovery-results" class="discovery-results">
+                <!-- Сюда будут выводиться результаты -->
+            </div>
+        </div>
+        
+        <h1>Управление устройством</h1>
+        <!-- Видеопоток -->
+        <div class="video-section">
+            <img id="video-stream" src="http://192.168.0.83:5000/stream" alt="Видеопоток">
+        </div>
+        
+        <!-- Кнопки движения -->
+        <div class="control-section">
+            <h2>Управление</h2>
+            <div class="control-grid">
+                <button class="btn forward" onclick="sendCommand('forward')">⬆ Вперёд</button>
+                <button class="btn backward" onclick="sendCommand('backward')">⬇ Назад</button>
+                <button class="btn left" onclick="sendCommand('left')">⬅ Влево</button>
+                <button class="btn right" onclick="sendCommand('right')">➡ Вправо</button>
+                <button class="btn stop" onclick="sendCommand('stop')">❌ Стоп</button>
+            </div>
+        </div>
+
+        <!-- Кнопки фар -->
+        <div class="lights-section">
+            <h2>Фары</h2>
+            <div class="light-controls">
+                <button class="btn light-on" onclick="sendCommand('headlights_on')">
+                    💡 Включить фары
+                </button>
+                <button class="btn light-off" onclick="sendCommand('headlights_off')">
+                    ⚫ Выключить фары
+                </button>
+            </div>
+        </div>
+        <!-- Дополнительные фары -->
+        <div class="advanced-lights-section">
+            <h2>Дополнительные фары</h2>
+            <div class="light-controls">
+                <button class="btn hazard-lights-on" onclick="sendCommand('hazard_lights_on')">
+                    Включить<br>аварийные огни
+                </button>
+                <button class="btn hazard-lights-off" onclick="sendCommand('hazard_lights_off')">
+                    Выключить<br>аварийные огни
+                </button>
+            </div>
+        </div>
+
+        <!-- Статус -->
+        <div id="status" class="status">Готов к работе</div>
+    </div>
+    <script src="javascript/script.js"></script>
+    <script src="javascript/discover.js"></script>
+</body>
+</html>

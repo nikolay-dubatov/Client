@@ -1,0 +1,284 @@
+/* Базовые стили для страницы */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+/* Контейнер для всех элементов */
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Видеопоток */
+.video-section {
+    text-align: center;
+}
+
+.video-section h2 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+#video-stream {
+    width: 100%;
+    max-height: 40vh;
+    border-radius: 8px;
+    background: #000;
+    object-fit: contain;
+}
+
+/* Секция ввода IP-адреса */
+.ip-section {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+.ip-section h2 {
+    text-align: center;
+    margin-bottom: 12px;
+    color: #444;
+    font-size: 1.1rem;
+}
+
+/* Секция обнаружения устройств */
+.discovery-section {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.discovery-section h2 {
+    text-align: center;
+    margin-bottom: 12px;
+    color: #444;
+    font-size: 1.1rem;
+}
+
+/* Кнопка обнаружения устройств */
+#discover-btn {
+    width: 100%;
+    background-color: #2196F3;
+    color: white;
+}
+#discover-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Результаты обнаружения */
+.discovery-results {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    min-height: 40px;
+}
+.discovery-results p {
+    margin: 5px 0;
+    text-align: center;
+    color: #666;
+}
+.discovery-results ul {
+    list-style: none;
+    padding: 0;
+}
+.discovery-results li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+.connect-device {
+    background-color: #4caf50;
+    color: white;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+/* Форма ввода IP-адреса */
+.ip-form {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+label[for="device-ip"] {
+    font-size: 0.9rem;
+    color: #555;
+    font-weight: bold;
+}
+#device-ip {
+    padding: 12px 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+#device-ip:focus {
+    border-color: #2196F3;
+}
+
+/* Кнопка подключения */
+#connect-btn {
+    background-color: #4caf50;
+    color: white;
+}
+#connect-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Секция управления движением */
+.control-section {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.control-section h2 {
+    text-align: center;
+    margin-bottom: 12px;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+/* Сетка кнопок движения */
+.control-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Кнопки фар и сигнализации */
+.light-controls {
+    display: grid;
+    gap: 12px;
+}
+
+/* Общие стили кнопок */
+.btn {
+    width: 100%;
+    padding: 14px 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: bold;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Цвета кнопок движения */
+.btn.forward {
+    background-color: #4caf50;
+    color: white;
+}
+.btn.backward {
+    background-color: #f44336;
+    color: white;
+}
+.btn.left {
+    background-color: #2196F3;
+    color: white;
+}
+
+.btn.right {
+    background-color: #FF9800;
+    color: white;
+}
+.btn.stop {
+    background-color: #607d8b; 
+    color: white;
+}
+
+/* Секция аварийных огней */
+.advanced-lights-section {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+.advanced-lights-section h2 {
+    text-align: center;
+    margin-bottom: 12px;
+    color: #444;
+    font-size: 1.1rem;
+}
+
+/* Кнопка аварийной сигнализации */
+.btn.hazard-lights-on {
+    background-color: #ff5722;
+    color: white;
+}
+.btn.hazard-lights-off {
+    background-color: #807775;
+    color: white;
+}
+
+/* Статус‑панель */
+#status {
+    padding: 12px;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: bold;
+    min-height: 24px;
+    font-size: 0.9rem;
+}
+.status.success {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+}
+.status.error {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+}
+
+/* Адаптивность для маленьких экранов */
+@media (max-width: 360px) {
+    .btn {
+        padding: 12px 8px;
+        font-size: 0.85rem;
+    }
+    
+    #video-stream {
+        max-height: 35vh;
+    }
+    
+    .container {
+        gap: 10px;
+    }
+}
+@media (max-width: 480px) {
+    h2 {
+        font-size: 1rem;
+    }
+    
+    .control-grid,
+    .light-controls {
+        grid-template-columns: 1fr; /* На узких экранах кнопки в один столбец */
+    }
+}
