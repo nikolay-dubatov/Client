@@ -11,6 +11,7 @@ async function scanLocalNetwork() {
     for (let i = 1; i <= 254; i++) {
         const ip = `${baseIp}.${i}`;
         promises.push(checkDevice(ip, devices));
+        console.log(i)
     }
 
     await Promise.all(promises);
@@ -97,4 +98,6 @@ async function getLocalIp(params) {
     });
 }
 
-document.getElementById("discover-btn").addEventListener("click", scanLocalNetwork())
+document.getElementById("discover-btn").addEventListener("click", function(){
+    scanLocalNetwork()
+})
