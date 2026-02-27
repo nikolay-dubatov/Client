@@ -1,71 +1,96 @@
+let isScanning = false;
 async function scanLocalNetwork() {
     const resultsDiv = document.getElementById('discovery-results');
     resultsDiv.innerHTML = 'Поиск устройств...';
 
+    if (isScanning) {
+        resultsDiv.innerHTML = '<p>Уже выполняется сканирование...</p>';
+        return;
+    }
+
+    isScanning = true;
+
     try {
+        // Показываем начальное состояние
+        resultsDiv.innerHTML = `
+            <p>Запуск сканирования сети...</p>
+            <div class="scan-status">
+                <p id="scan-progress">Проверяем IP-адреса...</p>
+                <div class="progress-bar">
+                    <div id="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        `;
+
         const localIp = await getLocalIp();
-    const baseIp = localIp.split('.').slice(0, 3).join('.');
+        const baseIp = localIp.split('.').slice(0, 3).join('.');
 
-    const devices = [];
-    const promises = [];
+        const devices = [];
+        let scannedCount = 0;
+        const totalIps = 254;
 
-    // Показываем прогресс сканирования
-        resultsDiv.innerHTML += '<p id="scan-progress">Проверяем IP-адреса...</p>';
+        const progressFill = document.getElementById('progress-fill');
         const progressEl = document.getElementById('scan-progress');
 
         for (let i = 1; i <= 254; i++) {
             const ip = `${baseIp}.${i}`;
             promises.push(checkDevice(ip, devices));
 
-            // Обновляем прогресс каждые 50 адресов
-            if (i % 50 === 0 || i === 254) {
-                progressEl.textContent = `Проверяем IP: ${baseIp}.${i} (прогресс: ${i}/254)`;
-            }
+            progressEl.textContent = `Проверяем IP: ${baseIp}.${i} (прогресс: ${i}/254)`;
+
+            // Обновляем прогресс после каждого IP
+            scannedCount++;
+            const percent = (scannedCount / totalIps) * 100;
+
+            progressEl.textContent = `Проверяем IP: ${baseIp}.${i} (${scannedCount}/${totalIps})`;
+            progressFill.style.width = `${percent}%`;
+            // Ждём ответа от текущего IP перед переходом к следующему
+            await checkDevice(ip, devices);
         }
 
-    await Promise.all(promises);
-    // Удаляем индикатор процесса
-    if (progressEl) progressEl.remove();
+        // Удаляем индикатор процесса
+        if (progressEl) progressEl.remove();
 
-    if (devices.length > 0) {
-        let html = `<p>Найдено устройств: ${devices.length}</p><div class="devices-list">`;
+        if (devices.length > 0) {
+            let html = `<p>Найдено устройств: ${devices.length}</p><div class="devices-list">`;
 
-        devices.forEach(device => {
-            html += `
-            <div class="device-card">
+            devices.forEach(device => {
+                html += `
+                <div class="device-card">
                 <div class="device-header">
                     <strong>${device.ip}:5000</strong>
-                    <span class="device-status online">Онлайн</span>
-                </div>
-                    <div class="device-info">
-                    <p><strong>Тип:</strong> ${device.device_type || 'Неизвестно'}</p>
-                    <p><strong>Имя:</strong> ${device.name || 'Без имени'}</p>
-                    <p><strong>Версия:</strong> ${device.version || 'Не указана'}</p>
-                    <p><strong>Возможности:</strong> ${
-                        device.capabilities ? device.capabilities.join(', ') : 'Не указаны'
-                    }</p>
-                </div>
-                <button class="btn connect-device" data-ip="${device.ip}">
-                    Подключиться
-                </button>
-
-            `;
-        });
-        html += "</div>";
-        resultsDiv.innerHTML = html;
-
-        document.querySelectorAll('.connect-device').forEach(btn => {
-            btn.addEventListener('click', function(){
-                const ip = this.getAttribute('data-ip');
-                setDeviceIp(ip);
+            <span class="device-status online">Онлайн</span>
+        </div>
+        <div class="device-info">
+            <p><strong>Тип:</strong> ${device.device_type || 'Неизвестно'}</p>
+            <p><strong>Имя:</strong> ${device.name || 'Без имени'}</p>
+            <p><strong>Версия:</strong> ${device.version || 'Не указана'}</p>
+            <p><strong>Возможности:</strong> ${
+                device.capabilities ? device.capabilities.join(', ') : 'Не указаны'
+            }</p>
+        </div>
+        <button class="btn connect-device" data-ip="${device.ip}">
+            Подключиться
+        </button>
+    </div>`;
             });
-        });
-    } else {
-        resultsDiv.innerHTML = '<p>Устройства не найдены</p>';
-    }
-    } catch {
+            html += "</div>";
+            resultsDiv.innerHTML = html;
+
+            document.querySelectorAll('.connect-device').forEach(btn => {
+                btn.addEventListener('click', function(){
+                    const ip = this.getAttribute('data-ip');
+                    setDeviceIp(ip);
+                });
+            });
+        } else {
+            resultsDiv.innerHTML = '<p>Устройства не найдены</p>';
+        }
+    } catch (error) {
         resultsDiv.innerHTML = `<p class="error">Ошибка при сканировании: ${error.message}</p>`;
         console.error('Ошибка сканирования:', error);
+    } finally {
+        isScanning = false
     }
 }
 

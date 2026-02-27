@@ -287,3 +287,22 @@ label {
 .device-info p {
     margin: 5px 0;
 }
+
+.scan-status {
+    margin: 15px 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+#progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    transition: width 0.3s ease;
+}
