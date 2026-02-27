@@ -1,4 +1,4 @@
-let deviceIp = '192.168.0.83:5000';
+let currentIp = '192.168.0.83:5000';
 
 // Обработчик для кнопки подключения
 function setDeviceIp(newIp) {

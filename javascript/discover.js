@@ -96,3 +96,5 @@ async function getLocalIp(params) {
         pc.createOffer().then(offer => pc.setLocalDescription(offer));
     });
 }
+
+document.getElementById("discover-btn").addEventListener("click", updateVideoSource())
