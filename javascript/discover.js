@@ -2,21 +2,34 @@ async function scanLocalNetwork() {
     const resultsDiv = document.getElementById('discovery-results');
     resultsDiv.innerHTML = 'Поиск устройств...';
 
-    const localIp = await getLocalIp();
+    try {
+        const localIp = await getLocalIp();
     const baseIp = localIp.split('.').slice(0, 3).join('.');
 
     const devices = [];
     const promises = [];
 
-    for (let i = 1; i <= 254; i++) {
-        const ip = `${baseIp}.${i}`;
-        promises.push(checkDevice(ip, devices));
-        console.log(i)
-    }
+    // Показываем прогресс сканирования
+        resultsDiv.innerHTML += '<p id="scan-progress">Проверяем IP-адреса...</p>';
+        const progressEl = document.getElementById('scan-progress');
+
+        for (let i = 1; i <= 254; i++) {
+            const ip = `${baseIp}.${i}`;
+            promises.push(checkDevice(ip, devices));
+
+            // Обновляем прогресс каждые 50 адресов
+            if (i % 50 === 0 || i === 254) {
+                progressEl.textContent = `Проверяем IP: ${baseIp}.${i} (прогресс: ${i}/254)`;
+            }
+        }
 
     await Promise.all(promises);
+    // Удаляем индикатор процесса
+    if (progressEl) progressEl.remove();
+
     if (devices.length > 0) {
-        resultsDiv.innerHTML = `<p>Найдено устройств: ${devices.length}</p><div class="devices-list">`;
+        let html = `<p>Найдено устройств: ${devices.length}</p><div class="devices-list">`;
+
         devices.forEach(device => {
             html += `
             <div class="device-card">
@@ -39,7 +52,7 @@ async function scanLocalNetwork() {
             `;
         });
         html += "</div>";
-        resultsDiv = html;
+        resultsDiv.innerHTML = html;
 
         document.querySelectorAll('.connect-device').forEach(btn => {
             btn.addEventListener('click', function(){
@@ -50,6 +63,10 @@ async function scanLocalNetwork() {
     } else {
         resultsDiv.innerHTML = '<p>Устройства не найдены</p>';
     }
+    } catch {
+        resultsDiv.innerHTML = `<p class="error">Ошибка при сканировании: ${error.message}</p>`;
+        console.error('Ошибка сканирования:', error);
+    }
 }
 
 async function checkDevice(ip, devices) {
@@ -57,12 +74,12 @@ async function checkDevice(ip, devices) {
         const response = await fetch(`http://${ip}:5000/discover`, {
             method: 'GET', 
             mode: 'no-cors', 
-            timeout: 200
-        })
+            signal: AbortSignal.timeout(1000)
+        });
 
         if (response.ok) {
             try {
-                const data = await response.json()
+                const data = await response.json();
                 devices.push({
                     ip: ip, 
                     port: 5000, 
@@ -82,7 +99,7 @@ async function checkDevice(ip, devices) {
     }
 }
 
-async function getLocalIp(params) {
+async function getLocalIp() {
     return new Promise((resolve) => {
         const pc = new RTCPeerConnection();
         pc.createDataChannel('dummy');
@@ -99,5 +116,5 @@ async function getLocalIp(params) {
 }
 
 document.getElementById("discover-btn").addEventListener("click", function(){
-    scanLocalNetwork()
-})
+    scanLocalNetwork();
+});
