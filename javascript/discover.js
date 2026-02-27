@@ -1,5 +1,3 @@
-const { version } = require("react");
-
 async function scanLocalNetwork() {
     const resultsDiv = document.getElementById('discovery-results');
     resultsDiv.innerHTML = 'Поиск устройств...';
