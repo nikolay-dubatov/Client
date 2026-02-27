@@ -97,4 +97,4 @@ async function getLocalIp(params) {
     });
 }
 
-document.getElementById("discover-btn").addEventListener("click", updateVideoSource())
+document.getElementById("discover-btn").addEventListener("click", scanLocalNetwork())
