@@ -1,4 +1,4 @@
-let currentIp = '192.168.0.83:5000';
+let currentIp = '192.168.0.83';
 
 // Обработчик для кнопки подключения
 function setDeviceIp(newIp) {
@@ -11,12 +11,12 @@ function setDeviceIp(newIp) {
 // Обновление источника видеопотока
 function updateVideoSource() {
     const video = document.getElementById('video-stream');
-    video.src = `http://${deviceIp}/stream`;
+    video.src = `http://${currentIp}:5000/stream`;
 }
 
 // Функция отправки команды
 function sendCommand(command) {
-    fetch(`http://${deviceIp}/${command}`)
+    fetch(`http://${currentIp}:5000/${command}`)
         .then(response => response.json())
         .then(data => {
             const statusEl = document.getElementById('status');
