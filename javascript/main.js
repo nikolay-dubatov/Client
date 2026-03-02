@@ -1,11 +1,28 @@
 let currentIp = '192.168.0.83';
 
-// Обработчик для кнопки подключения
+// Обработчик для подключения
 function setDeviceIp(newIp) {
+    // Останавливаем обновления для предыдущего устройства (если было)
+    if (typeof stopTelemetryUpdates === 'function') {
+        stopTelemetryUpdates();
+    }
+    console.log(`Выбрано устройство: ${newIp}`);
+
+    if (typeof startTelemetryUpdates === 'function') {
+        startTelemetryUpdates(newIp);
+    }
+    
     currentIp = newIp;
     document.getElementById('device-ip').value = newIp;
     updateVideoSource();
 
+}
+
+function disconnectDevice() {
+    if (typeof startTelemetryUpdates === 'function') {
+        stopTelemetryUpdates();
+    }
+    console.log('Отключение от устройства');
 }
 
 // Обновление источника видеопотока
@@ -33,6 +50,7 @@ function sendCommand(command) {
                 `Ошибка: ${error.message}`;
         });
 }
+
 // Обработчик для кнопки подключения
 document.getElementById('connect-btn').addEventListener('click', function() {
     const ipInput = document.getElementById('device-ip');
@@ -46,6 +64,11 @@ document.getElementById('connect-btn').addEventListener('click', function() {
     }
     setDeviceIp(newIp);
     showStatus(`Подключено к ${newIp}`, 'success');
+});
+
+// Обработчик для кнопки отключения
+document.getElementById('disconnect-btn').addEventListener('click', () => {
+    disconnectDevice();
 });
 
 // Функция отображения статуса

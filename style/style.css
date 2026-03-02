@@ -139,6 +139,55 @@ label {
 .btn:active {
     transform: translateY(0);
 }
+
+/* Телеметрия */
+#telemetry-panel {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+.telemetry-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background: white;
+    border-radius: 4px;
+}
+.hidden {
+    display: none;
+}
+.control-buttons {
+    margin-top: 15px;
+    text-align: center;
+}
+#disconnect-btn {
+    background-color: #dc3545; 
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+#disconnect-btn:hover {
+    background-color: #c82333;
+}
+.btn.btn-danger {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 /* Секции фар */
 .lights-section {
     margin-bottom: 30px;

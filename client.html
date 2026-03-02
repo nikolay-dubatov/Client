@@ -46,6 +46,40 @@
             </div>
         </div>
 
+        <!-- Телеметрия -->
+        <div id="telemetry-panel" class="hidden">
+            <h2>Телеметрия устройства</h2>
+            <div class="telemetry-grid">
+                <div class="telemetry-item">
+                    <label>Батарея: </label>
+                    <span id="battery-value">— </span>
+                </div>
+                <div class="telemetry-item">
+                    <label>Температура: </label>
+                    <span id="temperature-value">— ℃</span>
+                </div>
+                <div class="telemetry-item">
+                    <label>Направление:</label>
+                    <span id="heading-value">— °</span>
+                </div>
+                <div class="telemetry-item">
+                    <label>Скорость:</label>
+                    <span id="speed-value">— км/ч</span>
+                </div>
+                <div class="telemetry-item">
+                    <label>Препятствие:</label>
+                    <span id="obstacle-value">— см</span>
+                </div>
+                <div class="telemetry-item">
+                    <label>Время обновления:</label>
+                    <span id="timestamp-value">—</span>
+                </div>
+            </div>
+            <div>
+                <button id="disconnect-btn" class="btn btn-danger">Отключиться</button>
+            </div>
+        </div>
+
         <!-- Кнопки фар -->
         <div class="lights-section">
             <h2>Фары</h2>
@@ -56,6 +90,7 @@
                 <button class="btn light-off" onclick="sendCommand('headlights_off')">
                     ⚫ Выключить фары
                 </button>
+                    
             </div>
         </div>
         <!-- Дополнительные фары -->
@@ -80,7 +115,8 @@
         <!-- Статус -->
         <div id="status" class="status">Готов к работе</div>
     </div>
-    <script src="javascript/script.js"></script>
     <script src="javascript/discover.js"></script>
+    <script src="javascript/telemetry.js"></script>
+    <script src="javascript/main.js"></script>
 </body>
 </html>
