@@ -1,5 +1,9 @@
 let isScanning = false;
 async function scanLocalNetwork() {
+    if (document.getElementById('scan-section').classList.contains('hidden')) {
+        alert('Секция сканирования отключена. Включите её в панели управления.');
+        return;
+    }
     const resultsDiv = document.getElementById('discovery-results');
     resultsDiv.innerHTML = 'Поиск устройств...';
 
