@@ -3,9 +3,127 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/pages/control.css">
+        <link rel="favicon" href="favicon.ico" type="image/x-icon">
         <title>Управление устройством</title>
     </head>
-    <body>
+    <body class="control-page">
+        <div class="control-container">
+            <header class="control-header">
+                <h2>Управление устройством</h2>
+                <button id="disconnect-btn" class="btn btn-danger">Отключиться</button>
+                <!-- Ссылка на главную страницу -->
+                <a href="index.html" class="btn btn-secondary" style="margin-left: 10px;">Назад к сканированию</a>
+            </header>
+
+            <main class="control-main">
+                <section class="horn-section">
+                    <h3>Гудок</h3>
+                    <button id="horn-btn" class="btn horn-btn">Подать сигнал</button>
+                    <p class="status-text" id="horn-status">Готов к работе</p>
+                </section>
+
+                <!-- Основная область управления: три колонки -->
+                <div class="control-grid">
+                    <!-- Левая колонка: движение вперёд/назад -->
+                    <div class="control-column car-forward-column">
+                        <section class="control-section car-forward-section">
+                            <h3>Движение</h3>
+                            <div class="direction-buttons-vertical">
+                                <button class="btn btn-dir forward" data-direction="forward">
+                                    ↑
+                                </button>
+                                <button class="btn btn-dir backward" data-direction="backward">
+                                    ↓
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Центральная колонка: управление камерой -->
+                    <div class="control-column camera-column">
+                        <section class="control-section camera-section">
+                            <h3>📹 Видеопоток и управление камерой</h3>
+
+                            <!-- Блок видео -->
+                            <div class="video-container">
+                                <video id="camera-feed" autoplay muted playsinline>
+                                    Ваш браузер не поддерживает видео. 
+                                </video>
+                                <div class="video-status" id="video-status">Подключение...</div>
+                            </div>
+                            <div class="camera-controls">
+                                <div class="direction-buttons">
+                                    <button class="btn dir-btn up" data-direction="cam-up">↑</button>
+                                    <button class="btn dir-btn left" data-direction="cam-left">←</button>
+                                    <button class="btn dir-btn stop" data-direction="cam-stop">●</button>
+                                    <button class="btn dir-btn right" data-direction="cam-right">→</button>
+                                    <button class="btn dir-btn down" data-direction="cam-down">↓</button>
+                                </div>
+                        
+                                <div class="joystick-container">
+                                    <div class="joystick" id="joystick-camera">
+                                        <div class="joystick-knob"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Правая колонка: повороты влево/вправо -->
+                    <div class="control-column car-turn-column">
+                        <section class="control-section car-turn-section">
+                            <h3>←→ Повороты</h3>
+                            <div class="direction-buttons-horisontal">
+                                <button class="btn dir-btn left-turn" data-direction="left-turn">←</button>
+                                <button class="btn dir-btn right-turn" data-direction="right-turn">→</button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <!-- Дополнительные функции -->
+                <section class="control-section additional-section">
+                    <h3>Настройки</h3>
+                    <div class="additional-controls">
+                        <button class="btn speed-btn" data-speed="low">Низкая скорость</button>
+                        <button class="btn speed-btn" data-speed="medium">Средняя скорость</button>
+                        <button class="btn speed-btn" data-speed="high">Высокая скорость</button>
+                    </div>
+                </section>
+            </main>
+
+            <aside class="telemetry-panel" id="telemetry-panel">
+                <h4>Телеметрия</h4>
+                <div class="telemetry-grid">
+                    <div class="telemetry-item">
+                        <label>Батарея:</label>
+                        <span id="battery-value">—</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <label>Температура:</label>
+                        <span id="temperature-value">— °C</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <label>Скорость машинки:</label>
+                        <span id="car-speed-value">— км/ч</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <label>Направление:</label>
+                        <span id="heading-value">— °</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <label>Препятствие:</label>
+                        <span id="obstacle-value">— см</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <label>Время обновления:</label>
+                        <span id="timestamp-value">—</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
         
+        <!-- <script src="js/main.js"></script> -->
     </body>
 </html>

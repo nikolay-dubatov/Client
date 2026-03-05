@@ -1,0 +1,190 @@
+.scan-page {
+    font-family: var(--font-main);
+    background: linear-gradient(135deg, #667eea 0%, #764ba1 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+.scan-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+/* Заголовок страницы */
+.scan-header {
+    text-align: center;
+    color: white;
+    margin-bottom: var(--spacing-xl);
+}
+.scan-header h1 {
+    font-size: 2.5em;
+    margin: 0 0 var(--spacing-sm) 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+.scan-header p {
+    font-size: 1.1em;
+    opacity: 0.9;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.scan-button:hover {
+    background: #2ecc71;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(39, 174, 96, 0.6);
+}
+.scan-button:active {
+    transform: translateY(0);
+}
+/* Секция результатов сканирования */
+.scan-results {
+    background: white;
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+.results-title {
+    font-size: 1.5em;
+    color: #2c3e50;
+    margin: 0;
+}
+.refresh-button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+/* Список устройств */
+.device-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.device-item {
+    padding: var(--spacing-md) var(--spacing-sm);
+    border-bottom: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+.device-item:last-child {
+    border-bottom: none;
+}
+.device-item:hover {
+    background-color: #f8f9fa;
+}
+.device-info {
+    flex: 1;
+}
+.device-name {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 4px;
+}
+.device-address {
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+.connect-button {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+.connect-button:hover {
+    background: #c0392b;
+}
+/* Статус сканирования */
+.scan-status {
+    text-align: center;
+    margin: var(--spacing-md) 0;
+    color: white;
+    font-style: italic;
+    min-height: 24px;
+}
+/* Сообщения об ошибках/успехе */
+.status-message {
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    margin: var(--spacing-sm) 0;
+    text-align: center;
+}
+.status-success {
+    background: rgba(46, 204, 113, 0.1);
+    color: #27ae60;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+.status-error {
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+/* Загрузчик */
+.loading {
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid white;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto var(--spacing-sm);
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
+
+/* Для экранов шириной до 768px */
+@media (max-width: 768px) {
+    .scan-container {
+        padding: var(--spacing-md);
+    }
+    .scan-header h1 {
+        font-size: 2em;
+    }
+    .scan-header p {
+        font-size: 1em;
+    }
+    .scan-button {
+        padding: 16px 24px;
+        font-size: 1.1em;
+        max-width: 280px;
+    }
+    .scan-results {
+        padding: var(--spacing-md);
+    }
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+    .device-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        text-align: left;
+    }
+    .device-info {
+        width: 100%;
+        margin-bottom: var(--spacing-xs);
+    }
+}

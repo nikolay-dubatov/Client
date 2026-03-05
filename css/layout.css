@@ -1,0 +1,30 @@
+/* Основной контейнер */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+}
+
+/* Для страницы управления — полноэкранный режим */
+.control-page {
+    height: 100vh;
+    /* overflow: hidden; */
+}
+.control-container {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+        "header" 
+        "main" 
+        "telemetry";
+}
+.control-header {
+    grid-area: header;
+}
+.control-main {
+    grid-area: main;
+}
+.telemetry-panel {
+    grid-area: telemetry;
+}

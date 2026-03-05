@@ -1,0 +1,322 @@
+/* Основная сетка управления — три колонки */
+.control-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+.control-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Стили для колонок */
+.car-forward-column,
+.car-turn-column {
+    align-items: center;
+    justify-content: center;
+}
+.camera-column {
+    text-align: center;
+}
+
+/* Вертикальные кнопки (вперёд/назад) */
+.direction-buttons-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+/* Горизонтальные кнопки (повороты) */
+.direction-buttons-horisontal {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-md);
+}
+
+/* Контейнер для видео */
+.video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* Соотношение сторон 16:9 */
+    background: #000;
+    border-radius: var(--border-radius-large);
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Видеоэлемент */
+#video-feed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Статус подключения */
+.video-status {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 1.9rem;
+}
+
+/* Если видео не загрузилось */
+#video-feed:not([src]) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7f8c8d;
+}
+
+/* Цвета для кнопок движения */
+.forward {
+    background: #27ae60; /* Зелёный */
+}
+.backward {
+    background: #c0392b; /* Красный */
+}
+.left-turn, .right-turn {
+    background: #f39c12; /* Оранжевый */
+}
+
+/* Секции */
+.car-forward-section h3, 
+.car-turn-section h3 {
+    color: #e67e22;
+}
+.camera-section h3 {
+    color: #2ecc71;
+}
+
+/* Дополнительные настройки */
+.additional-section {
+    margin-top: var(--spacing-lg);
+}
+
+.additional-controls {
+    display: flex;
+    gap: var(--spacing-cm);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.speed-btn {
+    padding: 8px 16px;
+    font-size: 1.9em;
+}
+[data-speed="low"] {
+    background: #3498db;
+}
+[data-speed="medium"] {
+    background: #2ecc71; /* Зелёный */
+}
+[data-speed="high"] {
+    background: #e74c3c; /* Красный */
+}
+
+/* Стили для управления камерой */
+.camera-controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+.direction-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.dir-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+    margin: var(--spacing-xs);
+}
+
+/* Джойстик */
+.joystick-container {
+    margin: 0 auto;
+    max-width: 180px;
+}
+
+.joystick {
+    width: 150px;
+    height: 150px;
+    background: var(--light-color);
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+}
+.joystick-knob {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    position: absolute;
+    top: 45px;
+    left: 45px;
+    cursor: move;
+}
+
+/* Верхняя панель */
+.control-header {
+    background: var(--dark-color);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Панель телеметрии */
+.telemetry-panel {
+    background: var(--light-color);
+    padding: var(--spacing-md);
+    border-top: 2px solid var(--primary-color);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.telemetry-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger-color);
+    color: white;
+}
+
+.horn-btn {
+    background: var(--warning-color);
+    width: 100%;
+    font-size: var(--font-size-large);
+    padding: 15px;
+}
+
+/* Блоки управления */
+.control-section {
+    background: white;
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Статусные сообщения */
+.status-text {
+    text-align: center;
+    margin-top: var(--spacing-sm);
+    font-style: italic;
+    color: #7f8c8d;
+}
+
+/* Классы для статуса видео */
+.video-status.success {
+    background: rgba(46, 204, 113, 0.8);
+}
+
+.video-status.error {
+    background: rgba(231, 76, 60, 0.8);
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+    /* Убираем кнопки управления камерой, оставляем только джойстик */
+    .camera-controls .direction-buttons {
+        display: none;
+    }
+
+    /* Уменьшаем отступы в секциях */
+    .control-section {
+        padding: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
+    }
+
+    /* Кнопки движения машинки — делаем крупнее */
+    .car-forward-column .dir-btn,
+    .car-turn-column .dir-btn {
+        width: 80px;
+        height: 80px;
+        font-size: 18px;
+        padding: 0;
+    }
+    /* Видео — сохраняем соотношение сторон 16:9, но уменьшаем */
+    .video-container {
+        aspect-ratio: 16 / 9;
+        max-height: 200px;
+    }
+    /* Телеметрия — уменьшаем высоту панели */
+    .telemetry-panel {
+        max-height: 120px;
+        font-size: 0.85em;
+        padding: var(--spacing-xs);
+    }
+    /* Увеличиваем джойстик камеры для удобного управления */
+    #joystick-camera {
+        width: 160px;
+        height: 160px;
+    }
+    #joystick-camera .joystick-knob {
+        width: 65px;
+        height: 65px;
+    }
+    /* Отключаем тени для лучшей производительности */
+    .control-section {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    /* Заголовок секции камеры — уменьшаем размер шрифта */
+    .camera-section h3 {
+        font-size: 1.1em;
+        margin-bottom: var(--spacing-xs);
+    }
+    /* Улучшаем тач‑взаимодействие */
+    .btn, .dir-btn, .joystick {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+}
+/* Для очень узких экранов в альбомной ориентации — дополнительная адаптация */
+@media (max-width: 500px) and (orientation: landscape) {
+    .control-grid {
+        grid-template-columns: 0.9fr 2.2fr 0.9fr; /* Немного корректируем пропорции */
+        gap: 5px;
+    }
+
+    /* Ещё уменьшаем видео */
+    .video-container {
+        max-height: 180px;
+    }
+
+    /* Джойстик — немного уменьшаем */
+    #joystick-camera {
+        width: 140px;
+        height: 140px;
+    }
+    #joystick-camera .joystick-knob {
+        width: 55px;
+        height: 55px;
+    }
+}
