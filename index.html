@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,20 +10,22 @@
     </head>
     <body>
         <div class="container">
-            <h1>Сканирование сети</h1>
+            <h1>Поиск устройств в локальной сети</h1>
 
-            <button id="scan-btn" class="btn btn-primary">Найти устройства</button>
-
-            <div id="discovery-results"></div>
-
-            <!-- Список найденных устройств -->
-            <div id="devices-list" class = devices-grid></div>
-
-            <!-- Ссылка на страницу управления -->
-            <div style="margin-top: 20px;">
-                <a href="control.html" class="btn btn-secondary">Перейти к управлению</a>
+            <div class="scan-controls">
+                <button id="scan-button">Начать сканирование</button>
+                <button id="refresh-button">Обновить</button>
             </div>
-        </div>
-        <!-- <script src="js/discover.js"></script> -->
+
+            <div id="scan-status" class="scan-status">
+                Нажмите «Начать сканирование» для поиска устройств
+            </div>
+            <div class="loading">Идёт сканирование сети...</div>
+
+            <ul id="device-list" class="device-list">
+                <!-- Сюда будут добавляться найденные устройства -->
+            </ul>
+            </div>
+        <script src="js/discover.js"></script>
     </body>
 </html>

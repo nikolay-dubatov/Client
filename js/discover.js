@@ -1,173 +1,156 @@
 let isScanning = false;
-async function scanLocalNetwork() {
-    if (document.getElementById('scan-section').classList.contains('hidden')) {
-        alert('Секция сканирования отключена. Включите её в панели управления.');
-        return;
+let devices = [];
+
+const scan_config = {
+    subnet: '192.168.0.', 
+    port: 5000, 
+    timeout: 2000, 
+    startRange: 1, 
+    endRange: 254
+};
+
+const scanButton = document.getElementById('scan-button');
+const deviceList = document.getElementById('device-list');
+const statusElement = document.getElementById('scan-status');
+const loadingEl = document.querySelector('.loading');
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    bindEvents();
+});
+
+function bindEvents() {
+    if (scanButton) {
+        scanButton.addEventListener('click', () => {
+            startScan()
+        });
     }
-    const resultsDiv = document.getElementById('discovery-results');
-    resultsDiv.innerHTML = 'Поиск устройств...';
-
-    if (isScanning) {
-        resultsDiv.innerHTML = '<p>Уже выполняется сканирование...</p>';
-        return;
-    }
-
-    isScanning = true;
-
-    try {
-        // Показываем начальное состояние
-        resultsDiv.innerHTML = `
-            <p>Запуск сканирования сети...</p>
-        `;
-
-        const localIp = await getLocalIp();
-        const baseIp = localIp.split('.').slice(0, 3).join('.');
-
-        const devices = [];
-        // Массив для всех промисов
-        const promises = [];
-        let scannedCount = 0;
-        const totalIps = 254;
-
-
-        for (let i = 1; i <= 254; i++) {
-            const ip = `${baseIp}.${i}`;
-
-            const checkPromise = checkDevice(ip, devices)
-                .finally(() => {
-                    console.log(ip);
-                    console.log(devices);
-                });
-            promises.push(checkPromise);
-        }
-
-        // Запускаем паралельную обработку промисов
-        await Promise.all(promises);
-        console.log('Done');
-        
-
-        if (devices.length > 0) {
-            let html = `<p>Найдено устройств: ${devices.length}</p><div class="devices-list">`;
-
-            devices.forEach(device => {
-                html += `
-            <div class="device-card">
-                <div class="device-header">
-                    <strong>${device.ip}:5000</strong>
-                    <span class="device-status online">Онлайн</span>
-                </div>
-                <div class="device-info">
-                    <p><strong>Тип:</strong> ${device.device_type || 'Неизвестно'}</p>
-                    <p><strong>Имя:</strong> ${device.name || 'Без имени'}</p>
-                    <p><strong>Версия:</strong> ${device.version || 'Не указана'}</p>
-                    <p><strong>Возможности:</strong> ${
-                        device.capabilities ? device.capabilities.join(', ') : 'Не указаны'
-                    }</p>
-                </div>
-                <button class="btn connect-device" data-ip="${device.ip}">
-                    Подключиться
-                </button>
-            </div>`;
-            });
-            html += "</div>";
-            resultsDiv.innerHTML = html;
-
-            document.querySelectorAll('.connect-device').forEach(btn => {
-                btn.addEventListener('click', function(){
-                    const ip = this.getAttribute('data-ip');
-                    setDeviceIp(ip);
-                });
-            });
-        } else {
-            resultsDiv.innerHTML = '<p>Устройства не найдены</p>';
-        }
-    } catch (error) {
-        resultsDiv.innerHTML = `<p class="error">Ошибка при сканировании: ${error.message}</p>`;
-        //console.error('Ошибка сканирования:', error);
-    } finally {isScanning = false;}
 }
 
-async function checkDevice(ip, devices) {
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `http://${ip}:5000/discover`, true);
+async function startScan() {
+    if (isScanning) return;
 
-        // Обработчик успешного ответа (readyState === 4 и status === 200)
-        xhr.onload = () => {
-            console.log(`Успешно: ${ip}`); // Логируем успешные запросы
-            if (xhr.status === 200) {
-                const data = JSON.parse(xhr.responseText);
-                devices.push({
-                    ip: ip, 
-                    port: 5000, 
-                    device_type: data.device_type, 
-                    name: data.name, 
-                    version: data.version, 
-                    capabilities: data.capabilities
+    isScanning = true;
+    updateStatus('Поиск устройств в локальной сети...', 'info');
+    showLoading(true);
+    claearDevices();
+    devices = [];
+
+    try {
+        await scanLocalNetwork();
+        displayDevices(devices);
+        updateStatus(`Найдено ${devices.length} устройств`, 'success');
+    } catch (error) {
+        console.error('Ошибка сканирования:', error);
+        updateStatus('Ошибка при сканировании сети', 'error');
+    } finally {
+        isScanning = false;
+        showLoading(false);
+    }
+}
+
+async function scanLocalNetwork() {
+    const promises = [];
+    for (let i = scan_config.startRange; i <= scan_config.endRange; i++) {
+        const ip = `${scan_config.subnet}${i}`;
+        promises.push(checkDeviceWithDiscover(ip));
+    }
+
+    // Ждём завершения всех проверок
+    const results = await Promise.allSettled(promises);
+
+    devices = results
+        .filter(result => result.status === 'fulfilled' && result.value !== null)
+        .map(result => result.value);
+}
+
+async function checkDeviceWithDiscover(ip) {
+    return new Promise((resolve) => {
+        const url = `http://${ip}:${scan_config.port}/discover`;
+
+        fetch(url, {
+            method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json'
+            }, 
+            mode: 'cors'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'ok') {
+                resolve({
+                    id: Date.now() + Math.random(), // Уникальный ID
+                    name: data.name || `Устройство ${ip}`,
+                    address: `http://${ip}:${scan_config.port}`,
+                    capabilities: data.capabilities || [],
+                    version: data.version || 'unknown',
+                    ip: ip  
                 });
-                resolve(data);
             } else {
                 resolve(null);
             }
-        };
-
-        // Обработчик сетевых ошибок (тайм-аут, отказ соединения и т. д.)
-        xhr.onerror = () => {
+        })
+        .catch(() => {
             resolve(null);
-        }
-        xhr.ontimeout = () => {
-            resolve(null);
-        }
-        // Устанавливаем таймаут (в мс)
-        xhr.timeout = 5000;
-
-        // Отправляем запрос
-        xhr.send()
+        });
     });
 }
 
+function displayDevices(devicesList) {
+    deviceList.innerHTML = '';
 
-async function getLocalIp() {
-    return '192.168.0.83';
-    // return new Promise((resolve, reject) => {
-    //     if (!window.RTCPeerConnection) {
-    //         return reject(new Error('WebRTC не поддерживается'));
-    //     }
+    if (devicesList.length === 0) {
+        deviceList.innerHTML = '<li class="no-devices">Устройства не найдены</li>';
+        return;
+    }
 
-    //     const pc = new RTCPeerConnection({iceServers: []});
-    //     const localIps = new Set();
-    //     let timeout;
-        
-    //     pc.createDataChannel('');
+    devicesList.forEach(device => {
+        if (!device) return;
 
-    //     pc.createOffer()
-    //         .then(offer => pc.setLocalDescription(offer))
-    //         .catch(reject);
+        const li = document.createElement('li');
+        li.className = 'device-item'
+        li.innerHTML = `
+            <div class="device-info">
+                <div class="device-name">${device.name}</div>
+                <div class="device-address">${device.address}</div>
+                ${device.version !== 'unknown' ? `<div class="device-version">Версия: ${device.version}</div>` : ''}
+                <div class="device-capabilities">Возможности: ${device.capabilities.join(', ')}</div>
+            </div>
+            <button class="connect-button" data-device-id="${device.id}">Подключиться</button>
+        `;
+        deviceList.appendChild(li);
+    });
 
-        
-    //     pc.onicecandidate = (event) => {
-    //         if (!event.candidate) {
-    //             if (localIps.size === 0) {
-    //                 reject(new Error('Локальный IP не найден'));
-    //             } else {
-    //                 resolve(Array.from(localIps));
-    //             }
-    //             pc.close;
-    //             return;
-    //         }; 
-
-    //         if (!event.candidate.candidate.includes('typ host')) return;
-
-    //         const ipMatch = event.candidate.candidate.match(/([0-9]{1,3}\.){3}[0-9]{1,3}/);
-    //         if (ipMatch) localIps.add(ipMatch);
-    //     };
-    //     timeout = setTimeout(() => {
-    //         reject(new Error('Таймаут: ICE-кандидаты не получены')); 
-    //         pc.close();
-    //     }, 5000)
-    // });
+    document.querySelectorAll('.connect-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const deviceId = e.target.getAttribute('data-device-id');
+            connectToDevice(deviceId);
+        });
+    });
 }
 
-document.getElementById("discover-btn").addEventListener("click", function(){
-    scanLocalNetwork();
-});
+function connectToDevice(deviceId) {
+    const device = devices.find(d => d.id == deviceId);
+    if (!device) return;
+
+    localStorage.setItem('selectedDevice', JSON.stringify(device));
+    window.location.href = 'index.html';
+}
+function claearDevices(params) {
+    deviceList.innerHTML = '';
+}
+function updateStatus(message, type = 'info') {
+    if (!statusElement) return;
+    statusElement.textContent = message;
+    statusElement.className = `scan-status ${type}`;
+}
+function showLoading(show) {
+    if (loadingEl) {
+        loadingEl.style.display = show ? 'block' : 'none';
+    }
+}
