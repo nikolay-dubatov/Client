@@ -106,6 +106,7 @@
 }
 .speed-btn {
     padding: 8px 16px;
+    margin: 5px;
     font-size: 1.9em;
 }
 [data-speed="low"] {
