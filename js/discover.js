@@ -20,6 +20,13 @@ const loadingEl = document.querySelector('.loading');
 document.addEventListener('DOMContentLoaded', () => {
     bindEvents();
     displayFavorites();
+    // Делегирование событий на контейнер favoriteList
+    favoriteList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('connect-favorite')) {
+            const deviceId = e.target.getAttribute('data-device-id');
+            connectToDevice(deviceId);
+        }
+    });
 });
 
 function bindEvents() {
@@ -59,10 +66,9 @@ async function scanLocalNetwork() {
         const ip = `${scan_config.subnet}${i}`;
         promises.push(checkDeviceWithDiscover(ip));
     }
-
     try {
         const results = await Promise.allSettled(promises);
-        
+
         devices = results
             .filter(result => result.status === 'fulfilled')
             .map(result => result.value);
@@ -106,7 +112,6 @@ async function checkDeviceWithDiscover(ip) {
         xhr.onerror = () => {   
             reject();
         };
-
         xhr.send();
     });
 }

@@ -12,17 +12,19 @@
         <div class="control-container">
             <header class="control-header">
                 <h2>Управление устройством</h2>
-                <button id="disconnect-btn" class="btn btn-danger">Отключиться</button>
+                <button onclick="disconnect()" id="disconnect-btn" class="btn btn-danger">Отключиться</button>
+                <button class="btn" id="stopTelemetryBtn">Остановить телеметрию</button>
                 <!-- Ссылка на главную страницу -->
-                <a href="index.html" class="btn btn-secondary" style="margin-left: 10px;">Назад к сканированию</a>
             </header>
 
             <main class="control-main">
                 <section class="horn-section">
                     <h3>Гудок</h3>
                     <button id="horn-btn" class="btn horn-btn">Подать сигнал</button>
-                    <p class="status-text" id="horn-status">Готов к работе</p>
                 </section>
+                <div class="status-panel">
+                    <div class="status-label">Готов к работе</div>
+                </div>
 
                 <!-- Основная область управления: три колонки -->
                 <div class="control-grid">
@@ -48,10 +50,23 @@
 
                             <!-- Блок видео -->
                             <div class="video-container">
-                                <video id="camera-feed" autoplay muted playsinline>
+                                <video id="video-feed" autoplay muted playsinline>
                                     Ваш браузер не поддерживает видео. 
                                 </video>
-                                <div class="video-status" id="video-status">Подключение...</div>
+                                <div class="telemetry-grid">
+                                    <div class="telemetry-item">
+                                        <label>Батарея:</label>
+                                        <span id="battery-value">—</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <label>Препятствие:</label>
+                                        <span id="obstacle-value">— см</span>
+                                    </div>
+                                    <div class="telemetry-item">
+                                        <label>Время обновления:</label>
+                                        <span id="timestamp-value">—</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="camera-controls">
                                 <div class="direction-buttons">
@@ -76,8 +91,8 @@
                         <section class="control-section car-turn-section">
                             <h3>←→ Повороты</h3>
                             <div class="direction-buttons-horisontal">
-                                <button class="btn dir-btn left-turn" data-direction="left-turn">←</button>
-                                <button class="btn dir-btn right-turn" data-direction="right-turn">→</button>
+                                <button class="btn dir-btn left-turn" data-direction="left">←</button>
+                                <button class="btn dir-btn right-turn" data-direction="right">→</button>
                             </div>
                         </section>
                     </div>
@@ -92,38 +107,8 @@
                     </div>
                 </section>
             </main>
-
-            <aside class="telemetry-panel" id="telemetry-panel">
-                <h4>Телеметрия</h4>
-                <div class="telemetry-grid">
-                    <div class="telemetry-item">
-                        <label>Батарея:</label>
-                        <span id="battery-value">—</span>
-                    </div>
-                    <div class="telemetry-item">
-                        <label>Температура:</label>
-                        <span id="temperature-value">— °C</span>
-                    </div>
-                    <div class="telemetry-item">
-                        <label>Скорость машинки:</label>
-                        <span id="car-speed-value">— км/ч</span>
-                    </div>
-                    <div class="telemetry-item">
-                        <label>Направление:</label>
-                        <span id="heading-value">— °</span>
-                    </div>
-                    <div class="telemetry-item">
-                        <label>Препятствие:</label>
-                        <span id="obstacle-value">— см</span>
-                    </div>
-                    <div class="telemetry-item">
-                        <label>Время обновления:</label>
-                        <span id="timestamp-value">—</span>
-                    </div>
-                </div>
-            </aside>
         </div>
         
-        <!-- <script src="js/main.js"></script> -->
+        <script src="js/main.js"></script>
     </body>
 </html>

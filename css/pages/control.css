@@ -9,7 +9,6 @@
     display: flex;
     flex-direction: column;
 }
-
 /* Стили для колонок */
 .car-forward-column,
 .car-turn-column {
@@ -19,7 +18,6 @@
 .camera-column {
     text-align: center;
 }
-
 /* Вертикальные кнопки (вперёд/назад) */
 .direction-buttons-vertical {
     display: flex;
@@ -27,44 +25,30 @@
     gap: var(--spacing-md);
     align-items: center;
 }
-
 /* Горизонтальные кнопки (повороты) */
 .direction-buttons-horisontal {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-md);
 }
-
 /* Контейнер для видео */
 .video-container {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9; /* Соотношение сторон 16:9 */
-    background: #000;
-    border-radius: var(--border-radius-large);
-    overflow: hidden;
-    margin-bottom: var(--spacing-md);
+    max-width: 800px;
+    height: 300px;
+    background: black;
+    margin: 0 auto;
+    border-radius: var(--border-radius);
 }
-
 /* Видеоэлемент */
 #video-feed {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    border-radius: 8px;
+    z-index: 1;
 }
-
-/* Статус подключения */
-.video-status {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 1.9rem;
-}
-
 /* Если видео не загрузилось */
 #video-feed:not([src]) {
     display: flex;
@@ -72,7 +56,6 @@
     justify-content: center;
     color: #7f8c8d;
 }
-
 /* Цвета для кнопок движения */
 .forward {
     background: #27ae60; /* Зелёный */
@@ -83,7 +66,6 @@
 .left-turn, .right-turn {
     background: #f39c12; /* Оранжевый */
 }
-
 /* Секции */
 .car-forward-section h3, 
 .car-turn-section h3 {
@@ -92,12 +74,10 @@
 .camera-section h3 {
     color: #2ecc71;
 }
-
 /* Дополнительные настройки */
 .additional-section {
     margin-top: var(--spacing-lg);
 }
-
 .additional-controls {
     display: flex;
     gap: var(--spacing-cm);
@@ -118,7 +98,6 @@
 [data-speed="high"] {
     background: #e74c3c; /* Красный */
 }
-
 /* Стили для управления камерой */
 .camera-controls {
     display: flex;
@@ -135,13 +114,11 @@
     font-size: 20px;
     margin: var(--spacing-xs);
 }
-
 /* Джойстик */
 .joystick-container {
     margin: 0 auto;
     max-width: 180px;
 }
-
 .joystick {
     width: 150px;
     height: 150px;
@@ -160,7 +137,6 @@
     left: 45px;
     cursor: move;
 }
-
 /* Верхняя панель */
 .control-header {
     background: var(--dark-color);
@@ -169,29 +145,72 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
-
-/* Панель телеметрии */
-.telemetry-panel {
-    background: var(--light-color);
-    padding: var(--spacing-md);
-    border-top: 2px solid var(--primary-color);
-    max-height: 200px;
-    overflow-y: auto;
-}
-
 .telemetry-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ecf0f1;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 11px;
+    line-height: 1.4;
+    z-index: 2;
+    backdrop-filter: blur(2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
-
 .telemetry-item {
+    color: white;
+    margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
-    padding: 6px 0;
+    align-items: center;
 }
-
+.telemetry-item label {
+    font-weight: bold;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+}
+#timestamp-value {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 9px;
+    color: #95a5a6;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 6px;
+}
+@media (max-width: 768px) and (orientation: landscape) {
+    .telemetry-grid {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 10px;
+    }
+    .telemetry-item label {
+        min-width: 60px;
+        font-size: 9px;
+    }
+    #timestamp-value {
+        font-size: 8px;
+    }
+}
+@media (max-width: 500px) and (orientation: landscape) {
+    .telemetry-grid {
+        display: none; /* Скрываем наложение */
+    }
+    /* Показываем телеметрию в боковой панели */
+    .telemetry-panel {
+        display: block;
+    }
+}
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
 .btn {
     padding: 12px 24px;
     border: none;
@@ -200,24 +219,20 @@
     font-size: var(--font-size-base);
     transition: all 0.3s;
 }
-
 .btn-primary {
     background: var(--primary-color);
     color: white;
 }
-
 .btn-danger {
     background: var(--danger-color);
     color: white;
 }
-
 .horn-btn {
     background: var(--warning-color);
     width: 100%;
     font-size: var(--font-size-large);
     padding: 15px;
 }
-
 /* Блоки управления */
 .control-section {
     background: white;
@@ -226,36 +241,40 @@
     margin-bottom: var(--spacing-md);
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-
-/* Статусные сообщения */
-.status-text {
+.status-panel {
+    position: relative;
     text-align: center;
-    margin-top: var(--spacing-sm);
-    font-style: italic;
-    color: #7f8c8d;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* полупрозрачный фон */
+    border-radius: 10px;
+    margin-bottom: 10px; /* отступ от следующего блока */
+    font-family: Arial, sans-serif;
+    font-weight: bold;
 }
-
-/* Классы для статуса видео */
-.video-status.success {
-    background: rgba(46, 204, 113, 0.8);
+.status-label {
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
 }
-
-.video-status.error {
-    background: rgba(231, 76, 60, 0.8);
+.status-label.warning {
+    background-color: #e67e22;
 }
-
+.status-label.error {
+    background-color: #c0392b;
+}
+.status-label.succes {
+    background-color: #27ae60;
+}
 @media (max-width: 768px) and (orientation: landscape) {
     /* Убираем кнопки управления камерой, оставляем только джойстик */
     .camera-controls .direction-buttons {
         display: none;
     }
-
     /* Уменьшаем отступы в секциях */
     .control-section {
         padding: var(--spacing-sm);
         margin-bottom: var(--spacing-md);
     }
-
     /* Кнопки движения машинки — делаем крупнее */
     .car-forward-column .dir-btn,
     .car-turn-column .dir-btn {
