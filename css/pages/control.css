@@ -37,7 +37,7 @@
     width: 100%;
     max-width: 800px;
     height: 300px;
-    background: black;
+    background: #7f8c8d;
     margin: 0 auto;
     border-radius: var(--border-radius);
 }
@@ -63,7 +63,7 @@
 .backward {
     background: #c0392b; /* Красный */
 }
-.left-turn, .right-turn {
+.car-btn.left, .car-btn.right {
     background: #f39c12; /* Оранжевый */
 }
 /* Секции */
@@ -108,7 +108,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
 }
-.dir-btn {
+.cam-btn {
     width: 60px;
     height: 60px;
     font-size: 20px;
@@ -118,6 +118,7 @@
 .joystick-container {
     margin: 0 auto;
     max-width: 180px;
+    display: none;
 }
 .joystick {
     width: 150px;
@@ -147,18 +148,18 @@
     align-items: center;
     width: 100%;
 }
+/* Телеметрия */
 .telemetry-grid {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0);
     color: #ecf0f1;
     padding: 12px 16px;
     border-radius: 10px;
     font-size: 11px;
     line-height: 1.4;
     z-index: 2;
-    backdrop-filter: blur(2px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 .telemetry-item {
@@ -178,8 +179,8 @@
     margin-top: 8px;
     text-align: center;
     font-size: 9px;
-    color: #95a5a6;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    color: black;
+    border-top: 1px solid #000008;
     padding-top: 6px;
 }
 @media (max-width: 768px) and (orientation: landscape) {
@@ -276,8 +277,8 @@
         margin-bottom: var(--spacing-md);
     }
     /* Кнопки движения машинки — делаем крупнее */
-    .car-forward-column .dir-btn,
-    .car-turn-column .dir-btn {
+    .car-forward-column .cam-btn,
+    .car-turn-column .cam-btn {
         width: 80px;
         height: 80px;
         font-size: 18px;
@@ -313,7 +314,7 @@
         margin-bottom: var(--spacing-xs);
     }
     /* Улучшаем тач‑взаимодействие */
-    .btn, .dir-btn, .joystick {
+    .btn, .cam-btn, .joystick {
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation;
     }

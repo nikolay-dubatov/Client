@@ -28,21 +28,21 @@ function initSystem() {
     videoElement.textContent = 'Ожидание видеопотока...';
 }
 function setupEventListener() {
-    document.querySelectorAll('.dir-btn').forEach(button => {
+    document.querySelectorAll('.cam-btn').forEach(button => {
         button.addEventListener('mousedown', handleCameraControl);
         button.addEventListener('touchstart', handleCameraControl);
         button.addEventListener('mouseup', stopCameraControl);
         button.addEventListener('touchend', stopCameraControl);
     });
-    const joystick = document.getElementById('joystick-camera');
-    if (joystick) {
-        joystick.addEventListener('mousedown', startJoystickControl);
-        joystick.addEventListener('touchstart', startJoystickControl);
-        document.addEventListener('mousemove', updateJoystickPosition);
-        document.addEventListener('touchmove', updateJoystickPosition);
-        document.addEventListener('mouseup', stopJoystickControl);
-        document.addEventListener('touchend', stopJoystickControl);
-    }
+    // const joystick = document.getElementById('joystick-camera');
+    // if (joystick) {
+    //     joystick.addEventListener('mousedown', startJoystickControl);
+    //     joystick.addEventListener('touchstart', startJoystickControl);
+    //     joystick.addEventListener('mousemove', updateJoystickPosition);
+    //     joystick.addEventListener('touchmove', updateJoystickPosition);
+    //     joystick.addEventListener('mouseup', stopJoystickControl);
+    //     joystick.addEventListener('touchend', stopJoystickControl);
+    // }
     document.getElementById('stopTelemetryBtn').addEventListener('click', stopTelemetry);
 }
 function disconnect() {
@@ -57,6 +57,7 @@ async function startStream() {
         videoElement.onloadedmetadata = () => {
             isConnected = true;
             updateDeviceStatus('success', 'Видеопоток активен');
+            console.log('Stream active');
         };
         videoElement.onerror = () => {
             updateDeviceStatus('error', 'Ошибка видеопотока');
@@ -68,6 +69,11 @@ async function startStream() {
 }
 function startTelemetry() {
     clearInterval(telemetryInterval);
+
+    const startBtn = document.getElementById('stopTelemetryBtn');
+    startBtn.removeEventListener('click', startTelemetry);
+    startBtn.addEventListener('click', stopTelemetry);
+    startBtn.textContent = 'Остановить телеметрию';
 
     telemetryInterval = setInterval(async () => {
         try {
@@ -95,9 +101,8 @@ function updateTelemetryOverlay(data) {
     document.getElementById('obstacle-value').textContent = data.data.obstacle_distance ? `${data.data.obstacle_distance} см` : '— см';
 
     const now = new Date();
-    document.getElementById('timestamp-value').textContent = 
-        `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-    updateBatteryColor(data.battery);
+    document.getElementById('timestamp-value').textContent = data.timestamp;
+    updateBatteryColor(data.data.battery);
 }
 function updateBatteryColor(level) {
     const batteryEl = document.getElementById('battery-value');
@@ -114,6 +119,10 @@ function stopTelemetry() {
         clearInterval(telemetryInterval);
         telemetryInterval = null;
     }
+    const stopButton = document.getElementById('stopTelemetryBtn');
+    stopButton.removeEventListener('click', stopTelemetry);
+    stopButton.addEventListener('click', startTelemetry);
+    stopButton.textContent = 'Запустить телеметрию';
 }
 function updateDeviceStatus(statusType = 'warning', message = 'Подключение...') {
     const statusElement = document.getElementById('status-label');
@@ -149,7 +158,7 @@ async function stopCameraControl() {
             method: 'GET'
         });
         const result = await response.json();
-        document.querySelectorAll('.dir-btn').forEach(btn => {
+        document.querySelectorAll('.cam-btn').forEach(btn => {
             btn.style.opacity = '1';
         });
         if (result.status === 'ok') {
@@ -228,4 +237,7 @@ async function sendJoystickCommand(x, y) {
         console.error(error);
         updateDeviceStatus('error', error);
     }
+}
+async function sendCarCommand(event) {
+    
 }

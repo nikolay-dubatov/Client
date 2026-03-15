@@ -33,10 +33,10 @@
                         <section class="control-section car-forward-section">
                             <h3>Движение</h3>
                             <div class="direction-buttons-vertical">
-                                <button class="btn btn-dir forward" data-direction="forward">
+                                <button class="btn car-btn forward" data-direction="forward">
                                     ↑
                                 </button>
-                                <button class="btn btn-dir backward" data-direction="backward">
+                                <button class="btn car-btn backward" data-direction="backward">
                                     ↓
                                 </button>
                             </div>
@@ -50,9 +50,7 @@
 
                             <!-- Блок видео -->
                             <div class="video-container">
-                                <video id="video-feed" autoplay muted playsinline>
-                                    Ваш браузер не поддерживает видео. 
-                                </video>
+                                <img id="video-feed">
                                 <div class="telemetry-grid">
                                     <div class="telemetry-item">
                                         <label>Батарея:</label>
@@ -69,12 +67,12 @@
                                 </div>
                             </div>
                             <div class="camera-controls">
-                                <div class="direction-buttons">
-                                    <button class="btn dir-btn up" data-direction="cam-up">↑</button>
-                                    <button class="btn dir-btn left" data-direction="cam-left">←</button>
-                                    <button class="btn dir-btn stop" data-direction="cam-stop">●</button>
-                                    <button class="btn dir-btn right" data-direction="cam-right">→</button>
-                                    <button class="btn dir-btn down" data-direction="cam-down">↓</button>
+                                <div class="camera-buttons">
+                                    <button class="btn cam-btn up" data-direction="cam-up">↑</button>
+                                    <button class="btn cam-btn left" data-direction="cam-left">←</button>
+                                    <button class="btn cam-btn stop" data-direction="cam-stop">●</button>
+                                    <button class="btn cam-btn right" data-direction="cam-right">→</button>
+                                    <button class="btn cam-btn down" data-direction="cam-down">↓</button>
                                 </div>
                         
                                 <div class="joystick-container">
@@ -91,8 +89,8 @@
                         <section class="control-section car-turn-section">
                             <h3>←→ Повороты</h3>
                             <div class="direction-buttons-horisontal">
-                                <button class="btn dir-btn left-turn" data-direction="left">←</button>
-                                <button class="btn dir-btn right-turn" data-direction="right">→</button>
+                                <button class="btn car-btn left" data-direction="left">←</button>
+                                <button class="btn car-btn right" data-direction="right">→</button>
                             </div>
                         </section>
                     </div>
