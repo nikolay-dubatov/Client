@@ -11,20 +11,21 @@
     /* overflow: hidden; */
 }
 .control-container {
-    height: 100vh;
+    min-height: 100vh;
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto 1fr;
     grid-template-areas: 
         "header" 
-        "main" 
-        "telemetry";
+        "main" ;
+    overflow: auto;
 }
 .control-header {
     grid-area: header;
 }
 .control-main {
     grid-area: main;
-}
-.telemetry-panel {
-    grid-area: telemetry;
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
 }

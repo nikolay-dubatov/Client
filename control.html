@@ -11,10 +11,14 @@
     <body class="control-page">
         <div class="control-container">
             <header class="control-header">
-                <h2>Управление устройством</h2>
-                <button onclick="disconnect()" id="disconnect-btn" class="btn btn-danger">Отключиться</button>
-                <button class="btn" id="stopTelemetryBtn">Остановить телеметрию</button>
-                <!-- Ссылка на главную страницу -->
+                <div class="header-top">
+                    <h2>Управление устройством</h2>
+                    <button onclick="disconnect()" id="disconnect-btn" class="btn btn-danger">Отключиться</button>
+                    <button class="btn" id="stopTelemetryBtn">Остановить телеметрию</button>
+                </div>
+                <div class="status-panel">
+                    <div class="status-label" id="status-label">Готов к работе</div>
+                </div>
             </header>
 
             <main class="control-main">
@@ -22,9 +26,6 @@
                     <h3>Гудок</h3>
                     <button id="horn-btn" class="btn horn-btn">Подать сигнал</button>
                 </section>
-                <div class="status-panel">
-                    <div class="status-label">Готов к работе</div>
-                </div>
 
                 <!-- Основная область управления: три колонки -->
                 <div class="control-grid">
@@ -54,11 +55,11 @@
                                 <div class="telemetry-grid">
                                     <div class="telemetry-item">
                                         <label>Батарея:</label>
-                                        <span id="battery-value">—</span>
+                                        <span class="battery value" id="battery-value">—</span>
                                     </div>
                                     <div class="telemetry-item">
                                         <label>Препятствие:</label>
-                                        <span id="obstacle-value">— см</span>
+                                        <span class="obstacle value" id="obstacle-value">— см</span>
                                     </div>
                                     <div class="telemetry-item">
                                         <label>Время обновления:</label>
@@ -70,7 +71,6 @@
                                 <div class="camera-buttons">
                                     <button class="btn cam-btn up" data-direction="cam-up">↑</button>
                                     <button class="btn cam-btn left" data-direction="cam-left">←</button>
-                                    <button class="btn cam-btn stop" data-direction="cam-stop">●</button>
                                     <button class="btn cam-btn right" data-direction="cam-right">→</button>
                                     <button class="btn cam-btn down" data-direction="cam-down">↓</button>
                                 </div>

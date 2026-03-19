@@ -81,13 +81,14 @@
 .additional-controls {
     display: flex;
     gap: var(--spacing-cm);
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: stretch;
 }
 .speed-btn {
-    padding: 8px 16px;
+    /* padding: 5px 10px; */
     margin: 5px;
-    font-size: 1.9em;
+    font-size: 1.9rem;
 }
 [data-speed="low"] {
     background: #3498db;
@@ -144,16 +145,47 @@
     color: white;
     padding: 15px 20px;
     display: flex;
+    z-index: 10;
+    position: sticky;
+    top: 0;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+.header-top {
+    display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+}
+/* Статусная панель */
+.status-panel {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.status-label {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: var(--light-color);
+    color: var(--dark-color);
+    font-size: 0.9rem;
+}
+.status-label.warning {
+    background-color: #e67e22;
+}
+.status-label.error {
+    background-color: #c0392b;
+}
+.status-label.success {
+    background-color: #27ae60;
 }
 /* Телеметрия */
 .telemetry-grid {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.1);
     color: #ecf0f1;
     padding: 12px 16px;
     border-radius: 10px;
@@ -175,6 +207,17 @@
     display: flex;
     align-items: center;
 }
+.value {
+    color: white;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+.value.warning {
+    animation: pulse 1.5s infinite;
+    color: #c0392b;
+    background-color: rgba(255, 0, 0, 0.1);
+}
 #timestamp-value {
     margin-top: 8px;
     text-align: center;
@@ -183,42 +226,19 @@
     border-top: 1px solid #000008;
     padding-top: 6px;
 }
-@media (max-width: 768px) and (orientation: landscape) {
-    .telemetry-grid {
-        top: 10px;
-        right: 10px;
-        padding: 8px 12px;
-        font-size: 10px;
-    }
-    .telemetry-item label {
-        min-width: 60px;
-        font-size: 9px;
-    }
-    #timestamp-value {
-        font-size: 8px;
-    }
-}
-@media (max-width: 500px) and (orientation: landscape) {
-    .telemetry-grid {
-        display: none; /* Скрываем наложение */
-    }
-    /* Показываем телеметрию в боковой панели */
-    .telemetry-panel {
-        display: block;
-    }
-}
 @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
-.btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-size: var(--font-size-base);
-    transition: all 0.3s;
+    0%, 100% {
+        opacity: 1; 
+        color: #c0392b;
+        transform: scale(1);
+        box-shadow: none;
+    }
+    50% {
+        opacity: 0.7; 
+        color: red;
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
 }
 .btn-primary {
     background: var(--primary-color);
@@ -241,103 +261,4 @@
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-md);
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-.status-panel {
-    position: relative;
-    text-align: center;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.8); /* полупрозрачный фон */
-    border-radius: 10px;
-    margin-bottom: 10px; /* отступ от следующего блока */
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-}
-.status-label {
-    padding: 5px 10px;
-    border-radius: 5px;
-    display: inline-block;
-}
-.status-label.warning {
-    background-color: #e67e22;
-}
-.status-label.error {
-    background-color: #c0392b;
-}
-.status-label.succes {
-    background-color: #27ae60;
-}
-@media (max-width: 768px) and (orientation: landscape) {
-    /* Убираем кнопки управления камерой, оставляем только джойстик */
-    .camera-controls .direction-buttons {
-        display: none;
-    }
-    /* Уменьшаем отступы в секциях */
-    .control-section {
-        padding: var(--spacing-sm);
-        margin-bottom: var(--spacing-md);
-    }
-    /* Кнопки движения машинки — делаем крупнее */
-    .car-forward-column .cam-btn,
-    .car-turn-column .cam-btn {
-        width: 80px;
-        height: 80px;
-        font-size: 18px;
-        padding: 0;
-    }
-    /* Видео — сохраняем соотношение сторон 16:9, но уменьшаем */
-    .video-container {
-        aspect-ratio: 16 / 9;
-        max-height: 200px;
-    }
-    /* Телеметрия — уменьшаем высоту панели */
-    .telemetry-panel {
-        max-height: 120px;
-        font-size: 0.85em;
-        padding: var(--spacing-xs);
-    }
-    /* Увеличиваем джойстик камеры для удобного управления */
-    #joystick-camera {
-        width: 160px;
-        height: 160px;
-    }
-    #joystick-camera .joystick-knob {
-        width: 65px;
-        height: 65px;
-    }
-    /* Отключаем тени для лучшей производительности */
-    .control-section {
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    /* Заголовок секции камеры — уменьшаем размер шрифта */
-    .camera-section h3 {
-        font-size: 1.1em;
-        margin-bottom: var(--spacing-xs);
-    }
-    /* Улучшаем тач‑взаимодействие */
-    .btn, .cam-btn, .joystick {
-        -webkit-tap-highlight-color: transparent;
-        touch-action: manipulation;
-    }
-}
-/* Для очень узких экранов в альбомной ориентации — дополнительная адаптация */
-@media (max-width: 500px) and (orientation: landscape) {
-    .control-grid {
-        grid-template-columns: 0.9fr 2.2fr 0.9fr; /* Немного корректируем пропорции */
-        gap: 5px;
-    }
-
-    /* Ещё уменьшаем видео */
-    .video-container {
-        max-height: 180px;
-    }
-
-    /* Джойстик — немного уменьшаем */
-    #joystick-camera {
-        width: 140px;
-        height: 140px;
-    }
-    #joystick-camera .joystick-knob {
-        width: 55px;
-        height: 55px;
-    }
 }

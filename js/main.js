@@ -26,6 +26,7 @@ function initSystem() {
     const videoElement = document.getElementById('video-feed');
     videoElement.src = '';
     videoElement.textContent = 'Ожидание видеопотока...';
+    updateDeviceStatus('warning', 'Ожидание видеопотока...')
 }
 function setupEventListener() {
     document.querySelectorAll('.cam-btn').forEach(button => {
@@ -54,11 +55,13 @@ async function startStream() {
     try {
         const url = `${device.address}/stream`;
         videoElement.src = url;
-        videoElement.onloadedmetadata = () => {
+        videoElement.onload = () => {
             isConnected = true;
             updateDeviceStatus('success', 'Видеопоток активен');
             console.log('Stream active');
         };
+        console.log(isConnected);
+        
         videoElement.onerror = () => {
             updateDeviceStatus('error', 'Ошибка видеопотока');
         };
@@ -106,12 +109,16 @@ function updateTelemetryOverlay(data) {
 }
 function updateBatteryColor(level) {
     const batteryEl = document.getElementById('battery-value');
-    if (level !== null && level <= 20) {
-        batteryEl.style.color = '#e74c3c';
-        batteryEl.style.fontWeight = 'bold';
-    } else if (level !== null) {
-        batteryEl.style.color = '#2ecc71';
-        batteryEl.style.fontWeight = 'normal';
+    batteryEl.classList.remove('warning');
+    if (level <= 20) {
+        batteryEl.classList.add('warning');
+    }
+}
+function updateObstacleColor(distance) {
+    const obstacleEl = document.getElementById('obstacle-value');
+    obstacleEl.classList.remove('warning');
+    if (distance <= 10) {
+        obstacleEl.classList.add('warning');
     }
 }
 function stopTelemetry() {
@@ -142,7 +149,7 @@ async function handleCameraControl(event) {
         const result = await response.json();
         if (result.status === 'ok') {
             event.target.style.opacity = '0.7';
-            updateDeviceStatus('succes', result.message);
+            updateDeviceStatus('success', result.message);
         } else {
             updateDeviceStatus('error', result.message);
         }
@@ -162,80 +169,11 @@ async function stopCameraControl() {
             btn.style.opacity = '1';
         });
         if (result.status === 'ok') {
-            updateDeviceStatus('succes', result.message);
+            updateDeviceStatus('success', result.message);
         }
     } catch (error) {
         console.error('Ошибка отправки команды:', error);
         updateDeviceStatus('error', result.message);    
-    }
-}
-function startJoystickControl(event) {
-    event.preventDefault();
-    isJoystickActive = true;
-    const joystick = document.getElementById('joystick-camera');
-    const rect = joystick.getBoundingClientRect();
-    joystickCenter = {
-        x: rect.left + rect.width / 2, 
-        y: rect.top + rect.height / 2
-    };
-    const knob = joystick.querySelector('.joystick-knob');
-    knob.style.transform = 'translate(0, 0)';
-}
-function updateJoystickPosition(e) {
-    if (!isJoystickActive) return;
-    e.preventDefault();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    const deltaX = clientX - joystickCenter.x;
-    const deltaY = clientY - joystickCenter.y;
-    const maxRadius = Math.min(joystickCenter.x, joystickCenter.y) * 0.7;
-    const distance = Math.min(Math.sqrt(deltaX * deltaX + deltaY * deltaY), maxRadius);
-    const angle = Math.atan2(deltaY, deltaX);
-    const knobX = Math.cos(angle) * distance;
-    const knobY = Math.sin(angle) * distance;
-    const knob = document.querySelector('.joystick-knob');
-    knob.style.transform = `translate(${knobX}px, ${knobY}px)`;
-    let normalizedX = knobX / maxRadius;
-    let normalizedY = knobY / maxRadius;
-    const sensitivityThreshold = 0.05;
-    if (Math.abs(normalizedX) < sensitivityThreshold &&
-        Math.abs(normalizedY) < sensitivityThreshold) {
-        normalizedX = 0;
-        normalizedY = 0;
-    }
-    if (joystickTimeout) {
-        clearTimeout(joystickTimeout);
-    }
-    joystickTimeout = setTimeout(() => {
-        sendJoystickCommand(normalizedX, normalizedY);
-    }, 50);
-}
-function stopJoystickControl() {
-    isJoystickActive = false;
-    const knob = document.querySelector('.joystick-knob');
-    knob.style.transform = 'translate(0, 0)';
-    sendJoystickCommand(0, 0);
-}
-async function sendJoystickCommand(x, y) {
-    try {
-        const url = `${device.address}/joystick?x=${x.toFixed(2)}&y=${y.toFixed(2)}`;
-        const response = await fetch(url, {method: 'GET'});
-        const text = await response.text();
-        let result;
-        try {
-            result = JSON.parse(text);
-        } catch (parseError) {
-            console.error('Ответ сервера не JSON:', text);
-            updateDeviceStatus('error', 'Ошибка формата ответа сервера');
-            return;
-        }
-        if (result.status !== "ok") {
-            console.error('Ошибка команды джойстика:', result.message);
-            updateDeviceStatus('error', result.message);
-        }
-    } catch (error) {
-        console.error(error);
-        updateDeviceStatus('error', error);
     }
 }
 async function sendCarCommand(event) {

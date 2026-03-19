@@ -23,12 +23,6 @@
     background: var(--light-color);
     color: var(--dark-color);
 }
-.horn-btn {
-    background: var(--warning-color);
-    width: 100%;
-    font-size: var(--font-size-large);
-    padding: 15px;
-}
 
 /* Блоки управления */
 .control-section {
@@ -64,33 +58,4 @@
     height: 60px;
     font-size: 20px;
     margin: var(--spacing-xs);
-}
-
-/* Джойстик */
-.joystick {
-    width: 150px;
-    height: 150px;
-    background: var(--light-color);
-    border-radius: 50%;
-    margin: 0 auto;
-    position: relative;
-}
-
-.joystick-knob {
-    width: 60px;
-    height: 60px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    position: absolute;
-    top: 45px;
-    left: 45px;
-    cursor: move;
-}
-
-/* Статусные тексты */
-.status-text {
-    text-align: center;
-    margin-top: var(--spacing-sm);
-    font-style: italic;
-    color: #7f8c8d;
 }
