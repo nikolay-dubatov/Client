@@ -94,7 +94,6 @@ async function checkDeviceWithDiscover(ip) {
                         id: Date.now() + Math.random(),
                         name: data.name || `Устройство ${ip}`,
                         address: `http://${ip}:${scan_config.port}`,
-                        capabilities: data.capabilities || [],
                         version: data.version || 'unknown',
                         ip: ip,
                         isFavorite: isFavorite(ip)
@@ -134,7 +133,6 @@ function displayDevices(devicesList) {
                 <div class="device-name">${device.name}</div>
                 <div class="device-address">${device.address}</div>
                 ${device.version !== 'unknown' ? `<div class="device-version">Версия: ${device.version}</div>` : ''}
-                <div class="device-capabilities">Возможности: ${device.capabilities.join(', ')}</div>
             </div>
             <div class="device-actions">
                 <button class="connect-button" data-device-id="${device.id}">Подключиться</button>

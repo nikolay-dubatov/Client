@@ -23,13 +23,14 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
-    align-items: center;
+    align-items: stretch;
 }
 /* Горизонтальные кнопки (повороты) */
 .direction-buttons-horisontal {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-md);
+    justify-content: space-between;
 }
 /* Контейнер для видео */
 .video-container {
@@ -88,7 +89,7 @@
 .speed-btn {
     /* padding: 5px 10px; */
     margin: 5px;
-    font-size: 1.9rem;
+    font-size: 1.8rem;
 }
 [data-speed="low"] {
     background: #3498db;
@@ -98,6 +99,11 @@
 }
 [data-speed="high"] {
     background: #e74c3c; /* Красный */
+}
+.speed-btn.selected {
+    color: white;
+    font-weight: bold;
+    font-size: 1.8rem;
 }
 /* Стили для управления камерой */
 .camera-controls {

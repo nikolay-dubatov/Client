@@ -1,7 +1,4 @@
 let telemetryInterval = null;
-let joystickTimeout = null;
-let isJoystickActive = false;
-let joystickCenter = {x: 0, y: 0};
 let device = null;
 try {
     device = JSON.parse(localStorage.getItem('selectedDevice'));
@@ -18,7 +15,6 @@ let lastTelemetryData = null;
 document.addEventListener('DOMContentLoaded', () => {
     initSystem();
     startStream();
-    startTelemetry();
 });
 function initSystem() {
     setupEventListener();
@@ -29,22 +25,22 @@ function initSystem() {
     updateDeviceStatus('warning', 'Ожидание видеопотока...')
 }
 function setupEventListener() {
-    document.querySelectorAll('.cam-btn').forEach(button => {
-        button.addEventListener('mousedown', handleCameraControl);
-        button.addEventListener('touchstart', handleCameraControl);
-        button.addEventListener('mouseup', stopCameraControl);
-        button.addEventListener('touchend', stopCameraControl);
+    document.querySelectorAll('.cam-btn').forEach(btn => {
+        btn.addEventListener('mousedown', handleCameraControl);
+        btn.addEventListener('touchstart', handleCameraControl);
+        btn.addEventListener('mouseup', stopCameraControl);
+        btn.addEventListener('touchend', stopCameraControl);
     });
-    // const joystick = document.getElementById('joystick-camera');
-    // if (joystick) {
-    //     joystick.addEventListener('mousedown', startJoystickControl);
-    //     joystick.addEventListener('touchstart', startJoystickControl);
-    //     joystick.addEventListener('mousemove', updateJoystickPosition);
-    //     joystick.addEventListener('touchmove', updateJoystickPosition);
-    //     joystick.addEventListener('mouseup', stopJoystickControl);
-    //     joystick.addEventListener('touchend', stopJoystickControl);
-    // }
-    document.getElementById('stopTelemetryBtn').addEventListener('click', stopTelemetry);
+    document.querySelectorAll('.car-btn').forEach(btn => {
+        btn.addEventListener('mousedown', sendCarCommand);
+        btn.addEventListener('touchstart', sendCarCommand);
+        btn.addEventListener('mouseup', stopCar);
+        btn.addEventListener('touchend', stopCar);
+    });
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+        btn.addEventListener('click', changeSpeed);
+    });
+    document.getElementById('toggleTelemetryBtn').addEventListener('click', startTelemetry);
 }
 function disconnect() {
     stopTelemetry();
@@ -53,15 +49,12 @@ function disconnect() {
 async function startStream() {
     const videoElement = document.getElementById('video-feed');
     try {
-        const url = `${device.address}/stream`;
+        const url = `${device.address}/camera/stream`;
         videoElement.src = url;
         videoElement.onload = () => {
             isConnected = true;
             updateDeviceStatus('success', 'Видеопоток активен');
-            console.log('Stream active');
         };
-        console.log(isConnected);
-        
         videoElement.onerror = () => {
             updateDeviceStatus('error', 'Ошибка видеопотока');
         };
@@ -73,7 +66,7 @@ async function startStream() {
 function startTelemetry() {
     clearInterval(telemetryInterval);
 
-    const startBtn = document.getElementById('stopTelemetryBtn');
+    const startBtn = document.getElementById('toggleTelemetryBtn');
     startBtn.removeEventListener('click', startTelemetry);
     startBtn.addEventListener('click', stopTelemetry);
     startBtn.textContent = 'Остановить телеметрию';
@@ -126,7 +119,7 @@ function stopTelemetry() {
         clearInterval(telemetryInterval);
         telemetryInterval = null;
     }
-    const stopButton = document.getElementById('stopTelemetryBtn');
+    const stopButton = document.getElementById('toggleTelemetryBtn');
     stopButton.removeEventListener('click', stopTelemetry);
     stopButton.addEventListener('click', startTelemetry);
     stopButton.textContent = 'Запустить телеметрию';
@@ -142,10 +135,9 @@ function updateDeviceStatus(statusType = 'warning', message = 'Подключе�
 }
 async function handleCameraControl(event) {
     const direction = event.target.dataset.direction;
+    const url = `${device.address}/camera/control?command=${direction}`
     try {
-        const response = await fetch(`${device.address}/${direction}`, {
-            method: 'GET', 
-        });
+        const response = await fetch(url, {method: 'GET'});
         const result = await response.json();
         if (result.status === 'ok') {
             event.target.style.opacity = '0.7';
@@ -154,16 +146,14 @@ async function handleCameraControl(event) {
             updateDeviceStatus('error', result.message);
         }
     } catch (error) {
-        console.error('Ошибка отправки команды управления:', error);
-        updateDeviceStatus('error', 'Ошибка управления камерой');
+        console.error(error);
+        updateDeviceStatus('error', error);
     }
 }
 async function stopCameraControl() {
-    
+    const url = `${device.address}/camera/control?command=cam-stop`;   
     try {
-        const response = await fetch(`${device.address}/cam-stop`, {
-            method: 'GET'
-        });
+        const response = await fetch(url, {method: 'GET'});
         const result = await response.json();
         document.querySelectorAll('.cam-btn').forEach(btn => {
             btn.style.opacity = '1';
@@ -177,5 +167,56 @@ async function stopCameraControl() {
     }
 }
 async function sendCarCommand(event) {
-    
+    const direction = event.target.dataset.direction;
+    const url = `${device.address}/car/commands?command=${direction}`;
+    try {
+        const response = await fetch(url, {method: 'GET'});
+        const result = await response.json();
+        if (result.status === 'ok') {
+            event.target.style.opacity = '0.7';
+            updateDeviceStatus('success', result.message);
+        } else {
+            updateDeviceStatus('error', result.message);
+        }
+    } catch (error) {
+        console.error(error);
+        updateDeviceStatus('error', error)
+    }
+}
+async function stopCar() {
+    const url = `${device.address}/car/commands?command=stop`;
+    try {
+        const response = await fetch(url, {method: 'GET'});
+        const result = await response.json();
+        if (result.status === 'ok') {
+            document.querySelectorAll('.car-btn').forEach(btn => {
+                btn.style.opacity = '1';
+            });
+            updateDeviceStatus('success', result.message);
+        } else {
+            updateDeviceStatus('error', result.message);
+        }
+    } catch (error) {
+        console.error(error);
+        updateDeviceStatus('error', error);
+    }
+}
+async function changeSpeed(event) {
+    const button = event.target;
+    const speed = button.dataset.speed;
+    const url = `${device.address}/car/speed?level=${speed}`;
+    try {
+        const response = await fetch(url, {method: 'GET'});
+        const result = await response.json();
+        if (result.status === 'ok') {
+            document.querySelectorAll('.speed-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+            updateDeviceStatus('success', result.message);
+        }
+    } catch (error) {
+        console.error(error);
+        updateDeviceStatus('error', error);
+    } 
 }
