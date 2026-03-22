@@ -17,7 +17,6 @@
     grid-template-areas: 
         "header" 
         "main" ;
-    overflow: auto;
 }
 .control-header {
     grid-area: header;

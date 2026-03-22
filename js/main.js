@@ -70,6 +70,7 @@ function startTelemetry() {
     startBtn.removeEventListener('click', startTelemetry);
     startBtn.addEventListener('click', stopTelemetry);
     startBtn.textContent = 'Остановить телеметрию';
+    updateDeviceStatus('success', 'Телеметрия запущена');
 
     telemetryInterval = setInterval(async () => {
         try {
@@ -123,6 +124,7 @@ function stopTelemetry() {
     stopButton.removeEventListener('click', stopTelemetry);
     stopButton.addEventListener('click', startTelemetry);
     stopButton.textContent = 'Запустить телеметрию';
+    updateDeviceStatus('success', 'Телеметрия остановлена');
 }
 function updateDeviceStatus(statusType = 'warning', message = 'Подключение...') {
     const statusElement = document.getElementById('status-label');
