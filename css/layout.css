@@ -15,6 +15,7 @@
 }
 .control-main {
     grid-area: main;
+    padding: var(--spacing-md);
     display: flex;
     flex-direction: column;
     overflow: auto;
