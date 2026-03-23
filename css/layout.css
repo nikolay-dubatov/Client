@@ -1,14 +1,6 @@
-/* Основной контейнер */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--spacing-md);
-}
-
 /* Для страницы управления — полноэкранный режим */
 .control-page {
     height: 100vh;
-    /* overflow: hidden; */
 }
 .control-container {
     min-height: 100vh;
@@ -23,7 +15,6 @@
 }
 .control-main {
     grid-area: main;
-    padding: var(--spacing-md);
     display: flex;
     flex-direction: column;
     overflow: auto;

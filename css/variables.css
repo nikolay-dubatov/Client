@@ -21,4 +21,6 @@
     /* Радиусы */
     --border-radius: 6px;
     --border-radius-large: 8px;
+
+    --header-height: 60px
 }
