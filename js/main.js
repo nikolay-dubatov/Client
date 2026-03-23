@@ -41,6 +41,7 @@ function setupEventListener() {
         btn.addEventListener('click', changeSpeed);
     });
     document.getElementById('toggleTelemetryBtn').addEventListener('click', startTelemetry);
+    document.getElementById('horn-btn').addEventListener('click', sendHorn);
 }
 function disconnect() {
     stopTelemetry();
@@ -221,4 +222,17 @@ async function changeSpeed(event) {
         console.error(error);
         updateDeviceStatus('error', error);
     } 
+}
+async function sendHorn() {
+    const url = `${device.address}/car/horn`;
+    try {
+        const response = await fetch(url);
+        const result = await response.json();
+        if (result.status === "ok") {
+            updateDeviceStatus('success', result.message);
+        }
+    } catch (error) {
+        console.error(error);
+        updateDeviceStatus('error', error);
+    }
 }
