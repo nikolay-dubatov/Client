@@ -40,6 +40,9 @@ function setupEventListener() {
     document.querySelectorAll('.speed-btn').forEach(btn => {
         btn.addEventListener('click', changeSpeed);
     });
+    document.querySelectorAll('.light-btn').forEach(btn => {
+        btn.addEventListener('click', toggleLights);
+    });
     document.getElementById('toggleTelemetryBtn').addEventListener('click', startTelemetry);
     document.getElementById('horn-btn').addEventListener('click', sendHorn);
 }
@@ -230,6 +233,32 @@ async function sendHorn() {
         const result = await response.json();
         if (result.status === "ok") {
             updateDeviceStatus('success', result.message);
+        }
+    } catch (error) {
+        console.error(error);
+        updateDeviceStatus('error', error);
+    }
+}
+function toggleLights(event) {
+    const button = event.target;
+    const currentState = button.dataset.state;
+    const name = button.dataset.name;
+    const newState = currentState === 'off' ? 'on' : 'off';
+    button.classList.toggle('on', newState === 'on');
+    button.classList.toggle('off', newState === 'off');
+    button.dataset.state = newState;
+    sendLightCommand(name, newState);
+}
+async function sendLightCommand(name, state) {
+    const url = `${device.address}/car/lights/${name}?state=${state}`;
+    try {
+        const response = await fetch(url);
+        const result = await response.json();
+        if (result.status === 'ok') {
+            updateDeviceStatus('success', result.message);
+        } else {
+            console.error(result.message);
+            updateDeviceStatus('error', result.message);
         }
     } catch (error) {
         console.error(error);

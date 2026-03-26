@@ -81,14 +81,12 @@
 }
 .additional-controls {
     display: flex;
-    gap: var(--spacing-cm);
+    gap: var(--spacing-sm);
     flex-wrap: nowrap;
     flex-direction: column;
     align-items: stretch;
 }
 .speed-btn {
-    /* padding: 5px 10px; */
-    margin: 5px;
     font-size: 1.8rem;
 }
 [data-speed="low"] {
@@ -155,7 +153,6 @@
     position: sticky;
     top: 0;
     flex-direction: column;
-    gap: 10px;
     width: 100%;
 }
 .header-top {
@@ -165,9 +162,9 @@
     width: 100%;
 }
 /* Статусная панель */
-.status-panel {
+.header-bottom {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
 }
 .status-label {
@@ -185,6 +182,28 @@
 }
 .status-label.success {
     background-color: #27ae60;
+}
+/* Управление фарами */
+.light-btn {
+    margin: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.light-btn:hover {
+    filter: brightness(1.2);
+}
+.light-btn.off {
+    background: rgba(255, 255, 255, 0.2);
+}
+.light-btn.on {
+    background: rgba(255, 255, 255, 0.5);
+}
+.light-btn .icon {
+    display: block;
+    text-align: center;
 }
 /* Телеметрия */
 .telemetry-grid {

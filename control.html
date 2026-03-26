@@ -16,7 +16,18 @@
                     <button onclick="disconnect()" id="disconnect-btn" class="btn btn-danger">Отключиться</button>
                     <button class="btn" id="toggleTelemetryBtn">Запустить телеметрию</button>
                 </div>
-                <div class="status-panel">
+                <div class="header-bottom">
+                    <div class="lights-control">
+                        <button title="headlights" class="light-btn off" data-state="off" data-name="headlights">
+                            <span class="icon">💡</span>
+                        </button>
+                        <button title="hazard lights" class="light-btn off" data-state="off" data-name="hazard_lights">
+                            <span class="icon">⚠️</span>
+                        </button>
+                        <button title="parking lights" class="light-btn off" data-state="off" data-name="parking_lights">
+                            <span class="icon">🔵</span>
+                        </button>
+                    </div>
                     <div class="status-label" id="status-label">Готов к работе</div>
                 </div>
             </header>
