@@ -303,4 +303,13 @@
     .speed-btn.selected {
         font-size: 1.3rem;
     }
+    .light-btn {
+        margin: 5px;
+    }
+    .btn-danger, #toggleTelemetryBtn {
+        padding: 5px 10px;
+    }
+    .header-top h2 {
+        display: none;
+    }
 }
