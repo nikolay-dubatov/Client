@@ -271,9 +271,8 @@
 }
 .horn-btn {
     background: var(--warning-color);
-    width: 100%;
-    font-size: var(--font-size-large);
-    padding: 15px;
+    font-size: var(--font-size-base);
+    padding: 10px;
 }
 /* Блоки управления */
 .control-section {
