@@ -201,10 +201,6 @@
 .light-btn.on {
     background: rgba(255, 255, 255, 0.5);
 }
-.light-btn .icon {
-    display: block;
-    text-align: center;
-}
 /* Телеметрия */
 .telemetry-grid {
     position: absolute;
