@@ -119,41 +119,15 @@
     font-size: 20px;
     margin: var(--spacing-xs);
 }
-/* Джойстик */
-.joystick-container {
-    margin: 0 auto;
-    max-width: 180px;
-    display: none;
-}
-.joystick {
-    width: 150px;
-    height: 150px;
-    background: var(--light-color);
-    border-radius: 50%;
-    margin: 0 auto;
-    position: relative;
-}
-.joystick-knob {
-    width: 60px;
-    height: 60px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    position: absolute;
-    top: 45px;
-    left: 45px;
-    cursor: move;
-}
 /* Верхняя панель */
 .control-header {
     background: var(--dark-color);
     color: white;
     padding: 15px 20px;
-    display: flex;
-    z-index: 10;
-    position: sticky;
-    top: 0;
-    flex-direction: column;
-    width: 100%;
+    transition: transform 0.3s ease;
+}
+.header-hide {
+    transform: translateY(-100%);
 }
 .header-top {
     display: flex;

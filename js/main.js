@@ -1,5 +1,6 @@
 let telemetryInterval = null;
 let device = null;
+let lastScrollY = window.scrollY;
 try {
     device = JSON.parse(localStorage.getItem('selectedDevice'));
     if (!device) {
@@ -45,6 +46,19 @@ function setupEventListener() {
     });
     document.getElementById('toggleTelemetryBtn').addEventListener('click', startTelemetry);
     document.getElementById('horn-btn').addEventListener('click', sendHorn);
+    document.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        const header = document.querySelector('.control-header');
+        const headerHeight = header.clientHeight;
+        if (currentScrollY > lastScrollY) {
+            if (currentScrollY > headerHeight) {
+                header.classList.add('header-hide');
+            }
+        } else {
+            header.classList.remove('header-hide');
+        }
+        lastScrollY = currentScrollY;
+    });
 }
 function disconnect() {
     stopTelemetry();

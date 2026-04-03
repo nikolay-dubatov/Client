@@ -12,10 +12,18 @@
 }
 .control-header {
     grid-area: header;
+    display: flex;
+    z-index: 100;
+    position: sticky;
+    top: 0;
+    left: 0;
+    flex-direction: column;
+    width: 100%;
 }
 .control-main {
     grid-area: main;
     padding: var(--spacing-md);
+    margin-top: var(--header-height);
     display: flex;
     flex-direction: column;
     overflow: auto;
