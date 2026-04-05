@@ -113,7 +113,7 @@ button:disabled {
     margin-bottom: 6px;
 }
 
-.device-version, .device-capabilities {
+.device-version {
     color: #7f8c8d;
     font-size: 13px;
 }
@@ -138,113 +138,4 @@ button:disabled {
     font-style: italic;
     border: 2px dashed #bdc3c7;
     border-radius: 8px;
-}
-/* Секция избранного */
-.favorites-section {
-    margin-top: 40px;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
-}
-
-.favorites-section h2 {
-    color: #333;
-    margin-bottom: 15px;
-    font-size: 20px;
-}
-
-.favorites-hint {
-    font-size: 14px;
-    color: #6c757d;
-    margin-bottom: 15px;
-    font-style: italic;
-}
-
-/* Список избранного */
-.favorite-list {
-    list-style: none;
-    padding: 0;
-}
-
-.favorite-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.favorite-name {
-    font-weight: 600;
-    color: #333;
-    flex: 1;
-}
-
-.favorite-address {
-    color: #666;
-    font-size: 13px;
-    margin: 0 15px;
-    flex: 2;
-}
-
-.remove-favorite {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    margin: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.remove-favorite:hover {
-    background: #c82333;
-}
-
-.no-favorites {
-    text-align: center;
-    color: #999;
-    padding: 20px;
-    font-style: italic;
-    border: 2px dashed #e0e0e0;
-    border-radius: 8px;
-}
-
-/* Стили для избранного в списке устройств */
-.device-item.favorite {
-    border-left: 4px solid #FFD700; /* Золотая полоса для избранного */
-    background: #fff9c4; /* Светло‑жёлтый фон */
-}
-
-.favorite-button {
-    background: transparent;
-    border: 1px solid #ddd;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px; /* Для символа звезды */
-}
-
-.favorite-button:hover {
-    background: #f5f5f5;
-}
-.connect-favorite {
-    background-color: #4CAF50; /* Зелёный цвет */
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    margin-left: 5px; /* Отступ от кнопки «Удалить» */
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.connect-favorite:hover {
-    background-color: #45a049; /* Тёмнее при наведении */
 }
