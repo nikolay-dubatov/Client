@@ -4,7 +4,7 @@ const scanButton = document.getElementById('scan-button');
 const deviceList = document.getElementById('device-list');
 const statusElement = document.getElementById('scan-status');
 const loadingEl = document.querySelector('.loading');
-const refreshButton = document.getElementById('refresh-button');
+const clearButton = document.getElementById('clear-btn');
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,13 +15,16 @@ function bindEvents() {
     if (scanButton) {
         scanButton.addEventListener('click', startScan);
     }
-    if (refreshButton) {
-        refreshButton.addEventListener('click', () => {
-            location.reload();
-        });
+    if (clearButton) {
+        clearButton.addEventListener('click', clearScan)
     }
 }
-
+function clearScan() {
+    isScanning = false;
+    showLoading(false);
+    clearDevices();
+    updateStatus('Нажмите «Начать сканирование» для поиска устройств', 'info');
+}
 async function startScan() {
     if (isScanning) return;
     try {

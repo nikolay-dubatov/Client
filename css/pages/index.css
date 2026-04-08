@@ -21,8 +21,8 @@ button {
     color: white;
 }
 
-#refresh-button {
-    background: #95a5a6;
+#clear-btn {
+    background: var(--danger-color);
     color: white;
 }
 
