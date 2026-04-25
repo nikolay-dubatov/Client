@@ -72,6 +72,7 @@ function getIps() {
     for (let i = 1; i <= 254; i++) {
         ips.push(`${baseIp}${i}`);
     }
+    ips.push('127.0.0.1');
     return ips;
 }
 async function checkDevice(ip) {
