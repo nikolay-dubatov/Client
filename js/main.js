@@ -78,6 +78,7 @@ async function startStream() {
         };
     } catch (error) {
         console.error('Ошибка подключения видео:', error);
+        videoElement.src = 'default-image-missing-placeholder-free-vector.jpg';
         updateDeviceStatus('error', 'Не удалось подключиться к видео');
     }
 }
